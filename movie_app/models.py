@@ -14,6 +14,9 @@ class Director(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
+    def get_url(self):
+        return reverse('directors-detail', args=[self.id])
+
 
 class Actor(models.Model):
 
@@ -56,7 +59,8 @@ class Movie(models.Model):
                                  validators=[MinValueValidator(1)])
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default=RUB)
     slug = models.SlugField(default='', null=False)
-    director = models.ForeignKey(Director, on_delete=models.CASCADE, null=True)
+    director = models.ForeignKey(Director, on_delete=models.CASCADE, null=True, related_name='movies')
+    # related_name меняет название ссылки в фореигн кей для обратной связи из директора на все его фильмы
     # models.CASCADE-удалит связанные фильмы
     # models.SET_NULL проставит нул в связанных фильмах
     # models.PROTECT не даст удалить пока есть в фильмах
