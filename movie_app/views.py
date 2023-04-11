@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Movie, Director
+from .models import Movie, Director, Actor
 from django.db.models import F, Sum, Max, Min, Avg, Count, Value
 
 
@@ -39,3 +39,21 @@ def show_one_director(request, direct: int):
     director = Director.objects.all().get(id=direct)
     return render(request, 'movie_app/one_director.html', {
         'director': director})
+
+
+def show_all_actors(request):
+    actors = Actor.objects.all()
+    return render(request, 'movie_app/all_actors.html', {'actors': actors})
+
+
+def show_one_actor(request, actor_id: int):
+    actor = Actor.objects.all().get(id=actor_id)
+    if actor.dressing:
+        dressing = actor.dressing
+    else:
+        dressing = 'Нет информации о кабинке'
+    actor_data = {
+        'actor': actor,
+        'dressing': dressing
+    }
+    return render(request, 'movie_app/one_actor.html', actor_data)

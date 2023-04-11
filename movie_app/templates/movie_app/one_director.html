@@ -6,6 +6,7 @@
 
 
 {% block content %}
+    {% include 'includes/navigation.html' %}
     <h2>Режиссёр</h2>
     <h3>Имя - {{ director.first_name }}</h3>
     <h3>Фамилия - {{ director.last_name }}</h3>
@@ -14,7 +15,7 @@
     <h3>Список фильмов</h3>
     <ul>
         {% for movie in director.movies.all %}
-        <li>{{ movie }}</li>
+        <a href="{{ movie.get_url }}"><li>{{ movie }}</li></a>
         {% endfor %}
     </ul>
 

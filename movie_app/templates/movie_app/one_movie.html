@@ -6,6 +6,7 @@
 
 
 {% block content %}
+    {% include 'includes/navigation.html' %}
     <h2>Информация о фильме- {{ movie.name }}</h2>
     <h3>Рейтинг {{ movie.rating }}</h3>
     <h3>Бюджет - {{ movie.budget }}</h3>
@@ -19,7 +20,7 @@
     <h3>Список актёров:</h3>
     <ul>
         {% for actor in movie.actors.all %}
-        <li>{{ actor }}</li>
+        <a href="{{ actor.get_url }}"><li>{{ actor }}</li></a>
         {% endfor %}
     </ul>
 {% endblock %}
