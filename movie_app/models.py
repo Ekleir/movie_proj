@@ -3,13 +3,36 @@ from django.urls import reverse
 from django.utils.text import slugify
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-# Create your models here.
+
+class Pet(models.Model):
+
+    Dog = 'DOG'
+    Cat = 'CAT'
+    Parrot = 'PAR'
+    Snake = 'SNA'
+    Fish = 'FIS'
+
+    PET_CHOICES = [
+        (Dog, 'Dog'),
+        (Cat, 'Cat'),
+        (Parrot, 'Parrot'),
+        (Snake, 'Snake'),
+        (Fish, 'Fish'),
+    ]
+
+    name = models.CharField(max_length=20)
+    age = models.IntegerField(validators=[MinValueValidator(1)])
+    animal_type = models.CharField(max_length=20, choices=PET_CHOICES)
+
+    def __str__(self):
+        return f'{self.animal_type} {self.name}'
 
 
 class Director(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     director_email = models.EmailField()
+    pet = models.ForeignKey(Pet, on_delete=models.CASCADE, related_name='pet_owner', null=True)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -26,6 +49,33 @@ class DressingRoom(models.Model):
         return f'{self.floor} {self.number}'
 
 
+class FamilyMember(models.Model):
+
+    Father = 'FAT'
+    Mother = 'MOT'
+    Brother = 'BRO'
+    Sister = 'SIS'
+    Daughter = 'DAU'
+    Son = 'SON'
+
+    FAMILY_CHOICES = [
+        (Father, 'Father'),
+        (Mother, 'Mother'),
+        (Brother, 'Brother'),
+        (Sister, 'Sister'),
+        (Daughter, 'Daughter'),
+        (Son, 'Son'),
+    ]
+
+    first_name = models.CharField(max_length=30, default='Unknown')
+    last_name = models.CharField(max_length=30, default='Unknown')
+    age = models.IntegerField(null=False, validators=[MinValueValidator(1), MaxValueValidator(150)])
+    family_choice = models.CharField(max_length=3, choices=FAMILY_CHOICES, null=False)
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
+
+
 class Actor(models.Model):
 
     MALE = 'M'
@@ -40,6 +90,8 @@ class Actor(models.Model):
     last_name = models.CharField(max_length=100)
     gender = models.CharField(max_length=1, choices=GENDERS, default=MALE)
     dressing = models.OneToOneField(DressingRoom, on_delete=models.SET_NULL, null=True, blank=True)
+    family_member = models.OneToOneField(FamilyMember, on_delete=models.SET_NULL, null=True, blank=True,
+                                         related_name='family')
 
     def __str__(self):
         if self.gender == self.MALE:
@@ -87,3 +139,5 @@ class Movie(models.Model):
 
     def __str__(self):
         return f'{self.name} - {self.rating}%'
+
+

@@ -1,5 +1,5 @@
 from django.contrib import admin, messages
-from .models import Movie, Director, Actor, DressingRoom
+from .models import Movie, Director, Actor, DressingRoom, FamilyMember, Pet
 from django.db.models import QuerySet
 
 # admin.site.register(Movie, MovieAdmin)
@@ -75,3 +75,14 @@ class MovieAdmin(admin.ModelAdmin):
             messages.ERROR
         )
 
+
+@admin.register(FamilyMember)
+class FamilyMemberAdmin(admin.ModelAdmin):
+    list_display = ['family', 'family_choice', 'first_name', 'last_name', 'age', ]
+    list_editable = ['family_choice', 'first_name', 'last_name', 'age', ]
+
+
+@admin.register(Pet)
+class PetAdmin(admin.ModelAdmin):
+    list_display = ['animal_type', 'name', 'age']
+    list_editable = ['name', 'age']
