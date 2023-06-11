@@ -5,6 +5,8 @@ from django.db.models import QuerySet
 # admin.site.register(Movie, MovieAdmin)
 admin.site.register(Director)
 admin.site.register(Actor)
+
+
 # admin.site.register(DressingRoom)
 
 
@@ -63,11 +65,11 @@ class MovieAdmin(admin.ModelAdmin):
         return 'Топчик'
 
     @admin.action(description='Установить валюту в доллар')
-    def set_dollars(self, request, qs:QuerySet):
+    def set_dollars(self, request, qs: QuerySet):
         qs.update(currency=Movie.USD)
 
     @admin.action(description='Установить валюту в евро')
-    def set_euro(self, request, qs:QuerySet):
+    def set_euro(self, request, qs: QuerySet):
         count_updates = qs.update(currency=Movie.EUR)
         self.message_user(
             request,

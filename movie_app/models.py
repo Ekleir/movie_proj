@@ -116,12 +116,12 @@ class Movie(models.Model):
     ]
 
     name = models.CharField(max_length=40)
-    rating = models.IntegerField(validators=[MinValueValidator(1),
+    rating = models.IntegerField('Рейтинг', validators=[MinValueValidator(1),
                                              MaxValueValidator(100)])
-    year = models.IntegerField(null=True, blank=True)
-    budget = models.IntegerField(default=1_000_000, blank=True,
+    year = models.IntegerField('Год выпуска', null=True, blank=True)
+    budget = models.IntegerField('Бюджет', default=1_000_000, blank=True,
                                  validators=[MinValueValidator(1)])
-    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default=RUB)
+    currency = models.CharField('Валюта', max_length=3, choices=CURRENCY_CHOICES, default=RUB)
     slug = models.SlugField(default='', null=False)
     director = models.ForeignKey(Director, on_delete=models.CASCADE, null=True, related_name='movies')
     # related_name меняет название ссылки в фореигн кей для обратной связи из директора на все его фильмы

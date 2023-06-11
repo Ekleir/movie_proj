@@ -12,7 +12,7 @@ def show_all_movies(request):
         true_bool=Value(True),
         false_bool=Value(False),
         str_field=Value('hell'),
-        int_field=Value(123),
+        int_bool=Value(123),
         new_budget=F('budget')+100,
         new_field=F('budget')+F('rating'),
     )
