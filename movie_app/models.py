@@ -1,10 +1,10 @@
 from django.db import models
 from django.urls import reverse
-from django.utils.text import slugify
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Pet(models.Model):
+    """Домашние животные"""
 
     Dog = 'DOG'
     Cat = 'CAT'
@@ -29,6 +29,8 @@ class Pet(models.Model):
 
 
 class Director(models.Model):
+    """Режиссёр"""
+
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     director_email = models.EmailField()
@@ -42,6 +44,8 @@ class Director(models.Model):
 
 
 class DressingRoom(models.Model):
+    """Гримёрка"""
+
     floor = models.IntegerField()
     number = models.IntegerField()
 
@@ -50,6 +54,7 @@ class DressingRoom(models.Model):
 
 
 class FamilyMember(models.Model):
+    """Член семьи"""
 
     Father = 'FAT'
     Mother = 'MOT'
@@ -77,6 +82,7 @@ class FamilyMember(models.Model):
 
 
 class Actor(models.Model):
+    """Актер"""
 
     MALE = 'M'
     FEMALE = 'F'
@@ -100,10 +106,12 @@ class Actor(models.Model):
             return f'Актриса {self.first_name} {self.last_name}'
 
     def get_url(self):
+        """Ссылка на страницу актёра"""
         return reverse('actor-detail', args=[self.id])
 
 
 class Movie(models.Model):
+    """Фильм"""
 
     EUR = 'EUR'
     USD = 'USD'
@@ -124,20 +132,12 @@ class Movie(models.Model):
     currency = models.CharField('Валюта', max_length=3, choices=CURRENCY_CHOICES, default=RUB)
     slug = models.SlugField(default='', null=False)
     director = models.ForeignKey(Director, on_delete=models.CASCADE, null=True, related_name='movies')
-    # related_name меняет название ссылки в фореигн кей для обратной связи из директора на все его фильмы
-    # models.CASCADE-удалит связанные фильмы
-    # models.SET_NULL проставит нул в связанных фильмах
-    # models.PROTECT не даст удалить пока есть в фильмах
     actors = models.ManyToManyField(Actor)
 
-    # def save(self, *args, **kwargs):
-    #     self.slug = slugify(self.name)
-    #     super(Movie, self).save(*args, **kwargs)
-
     def get_url(self):
+        """Ссылка на страницу фильма"""
         return reverse('movie-detail', args=[self.slug])
 
     def __str__(self):
         return f'{self.name} - {self.rating}%'
-
 

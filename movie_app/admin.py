@@ -2,12 +2,9 @@ from django.contrib import admin, messages
 from .models import Movie, Director, Actor, DressingRoom, FamilyMember, Pet
 from django.db.models import QuerySet
 
-# admin.site.register(Movie, MovieAdmin)
+
 admin.site.register(Director)
 admin.site.register(Actor)
-
-
-# admin.site.register(DressingRoom)
 
 
 @admin.register(DressingRoom)
@@ -16,10 +13,12 @@ class DressingRoomAdmin(admin.ModelAdmin):
 
 
 class RatingFilter(admin.SimpleListFilter):
+    """Фильтр по рейтингу"""
     title = 'Фильтр по рейтингу'
     parameter_name = 'rating'
 
     def lookups(self, request, model_admin):
+        """Отображение параметров фильтрации в админке"""
         return [
             ('<40', 'Низкий'),
             ('от 40 до 59', 'Средний'),
@@ -28,6 +27,7 @@ class RatingFilter(admin.SimpleListFilter):
         ]
 
     def queryset(self, request, queryset: QuerySet):
+        """Переопределённый метод фильтрации queryset"""
         if self.value() == '<40':
             return queryset.filter(rating__lt=40)
         elif self.value() == 'от 40 до 59':
@@ -41,9 +41,7 @@ class RatingFilter(admin.SimpleListFilter):
 
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
-    # fields = ['name', 'rating']
-    # exclude = ['slug']
-    # readonly_fields = ['year']
+    """Работа с  Movie в админке"""
     prepopulated_fields = {'slug': ('name', )}
     list_display = ['name', 'rating', 'year', 'budget', 'currency', 'rating_status', 'director']
     list_editable = ['rating', 'year', 'budget', 'currency', 'director']
